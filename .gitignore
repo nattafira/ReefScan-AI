@@ -2,6 +2,7 @@
 # Python / Virtual Environment
 # ==============================
 .venv/
+.venv_deploy/
 venv/
 env/
 ENV/
@@ -87,6 +88,7 @@ checkpoint
 # ==============================
 models/mobilenetv2_multilabel_baseline.keras
 models/mobilenetv2_multilabel_weighted.keras
+models/mobilenetv2_multilabel_finetuned.keras
 
 # ==============================
 # Keep tracked project assets
