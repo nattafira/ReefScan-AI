@@ -6,9 +6,13 @@ The system uses **MobileNetV2** with transfer learning and fine-tuning. Because 
 
 > **Current best test result:** Macro F1 **63.9%**
 
+---
+
 ## 🎯 Project Overview
 
-ReefScan AI is designed to support the analysis of coral reef conditions from underwater survey imagery. Instead of forcing every image into a single class, the model can identify multiple conditions within the same image patch according to the dataset's multi-label annotations.
+ReefScan AI is designed to support the analysis of coral reef conditions from underwater survey imagery.
+
+Instead of forcing every image into a single class, the model can identify multiple conditions within the same image patch according to the dataset's multi-label annotations.
 
 ### Model Outputs
 
@@ -23,6 +27,8 @@ The final model uses 7 labels:
 7. **Physical issues**
 
 The **Predation** label was excluded from the final model because it had substantially fewer samples than the other labels and was removed during dataset preparation.
+
+---
 
 ## 🧠 Model
 
@@ -66,6 +72,8 @@ Multi-label predictions
 | Disease | 0.30 |
 | Physical issues | 0.35 |
 
+---
+
 ## 📊 Evaluation
 
 The final evaluation was performed on **3,162 test patches**.
@@ -89,6 +97,8 @@ The final evaluation was performed on **3,162 test patches**.
 
 Macro F1 is used as an important summary metric because it gives equal weight to every label and therefore provides a clearer view of performance on less frequent labels than accuracy alone.
 
+---
+
 ## 🗂️ Dataset Preparation
 
 The dataset contains coral image patches collected from underwater field surveys in **Koh Tao, Thailand**. Before training, the images were audited for validity, dimensions, brightness, contrast, and blur quality.
@@ -105,6 +115,8 @@ After quality filtering and label preparation:
 
 The dataset is multi-label, meaning that a single patch may contain multiple condition or stressor annotations.
 
+---
+
 ## 🔎 Error Analysis
 
 Error analysis was performed after model training to understand the remaining weaknesses of the classifier.
@@ -116,16 +128,20 @@ Key observations:
 - Per-label threshold tuning improved the balance between precision and recall compared with using a fixed threshold of 0.5 for every label.
 - The final model should be interpreted as a **multi-label decision-support system**, not as a definitive ecological diagnosis.
 
+---
+
 ## 🌐 Web Application
 
-The project includes a simple Flask-based web application that connects the trained model to a browser-based interface.
+The project includes a simple **Flask-based web application** that connects the trained model to a browser-based interface.
+
+For deployment, model inference is performed using **LiteRT / TensorFlow Lite** to reduce the runtime dependency footprint while preserving the prediction behavior of the original Keras model.
 
 ```text
 User uploads image
       ↓
 Flask API /predict
       ↓
-MobileNetV2 inference
+LiteRT inference
       ↓
 Per-label thresholds
       ↓
@@ -139,13 +155,15 @@ ReefScan AI web interface
 ```text
 app/
 ├── app.py          # Flask API and web server
-├── predict.py      # Model loading and inference logic
+├── predict.py      # LiteRT model loading and inference logic
 ├── templates/
 │   └── index.html  # ReefScan AI web interface
 └── static/
     ├── audio/      # Underwater ambience assets
     └── video/      # Hero video assets
 ```
+
+---
 
 ## 📁 Project Structure
 
@@ -167,9 +185,7 @@ Coral Classification Project/
 │   └── raw/
 │
 ├── models/
-│   ├── mobilenetv2_multilabel_baseline.keras
-│   ├── mobilenetv2_multilabel_weighted.keras
-│   ├── mobilenetv2_multilabel_finetuned.keras
+│   ├── reefscan_model.tflite
 │   └── reefscan_thresholds.json
 │
 ├── new_images/
@@ -181,6 +197,8 @@ Coral Classification Project/
 ├── requirements.txt
 └── README.md
 ```
+
+---
 
 ## 🚀 Running Locally
 
@@ -213,9 +231,17 @@ Then open:
 http://127.0.0.1:5000
 ```
 
+---
+
 ## 🧪 Running Model Inference
 
 The inference logic is implemented in `app/predict.py`.
+
+The deployed application uses the LiteRT model:
+
+```text
+models/reefscan_model.tflite
+```
 
 The model returns an independent probability for each of the 7 labels and then applies the saved per-label thresholds from:
 
@@ -223,7 +249,9 @@ The model returns an independent probability for each of the 7 labels and then a
 models/reefscan_thresholds.json
 ```
 
-This keeps the deployed inference configuration consistent with the final evaluation setup.
+The LiteRT model was validated against the original Keras model to ensure that the prediction outputs remain consistent after conversion, with negligible numerical differences.
+
+---
 
 ## 📚 Notebooks
 
@@ -233,7 +261,11 @@ This keeps the deployed inference configuration consistent with the final evalua
 | `02_Prepare_Dataset.ipynb` | Train/validation/test preparation, model training, threshold tuning, and evaluation |
 | `03_Finalize_Inference.ipynb` | Final model loading, threshold export, and inference validation |
 
+---
+
 ## 🛠️ Tech Stack
+
+### Model Development
 
 - **Python**
 - **TensorFlow / Keras**
@@ -242,8 +274,16 @@ This keeps the deployed inference configuration consistent with the final evalua
 - **NumPy / Pandas**
 - **scikit-learn**
 - **Jupyter Notebook**
+
+### Deployment
+
+- **LiteRT / TensorFlow Lite**
 - **Flask**
-- **HTML / Tailwind CSS / JavaScript**
+- **HTML**
+- **Tailwind CSS**
+- **JavaScript**
+
+---
 
 ## ⚠️ Limitations
 
@@ -252,6 +292,8 @@ This keeps the deployed inference configuration consistent with the final evalua
 - The system is intended as a **portfolio/research prototype and decision-support tool**, not as a replacement for expert ecological assessment.
 - Some labels have lower F1 scores than Healthy coral because of class imbalance, label co-occurrence, and overlapping visual characteristics.
 
+---
+
 ## 📌 Dataset & References
 
 This project is based on the **CoralConditionDataset** from the XL-SHAO repository and the associated research work on multi-label coral reef condition classification.
@@ -259,8 +301,14 @@ This project is based on the **CoralConditionDataset** from the XL-SHAO reposito
 - Dataset repository: https://github.com/XL-SHAO/CoralConditionDataset
 - Research paper: https://doi.org/10.1002/aqc.4241
 
+---
+
 ## 👩‍💻 Project Status
 
-**Current status:** Model development completed; local inference API and web prototype integrated.
+**Current status:** Model development completed; LiteRT-based local inference API and web prototype integrated.
 
-Next steps include deployment and final project documentation.
+The model was trained using **MobileNetV2 transfer learning with fine-tuning**, then converted from Keras to **LiteRT** for lightweight deployment.
+
+The converted model was validated against the original Keras model with negligible prediction differences.
+
+**Next step:** Web application deployment.
