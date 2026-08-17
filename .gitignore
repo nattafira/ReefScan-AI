@@ -1,0 +1,95 @@
+# ==============================
+# Python / Virtual Environment
+# ==============================
+.venv/
+venv/
+env/
+ENV/
+
+# ==============================
+# Python Cache / Build
+# ==============================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ==============================
+# Jupyter
+# ==============================
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+# ==============================
+# VS Code / IDE
+# ==============================
+.vscode/
+.idea/
+*.code-workspace
+
+# ==============================
+# Environment / Secrets
+# ==============================
+.env
+.env.*
+!.env.example
+
+# ==============================
+# Logs / Temporary Files
+# ==============================
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+# ==============================
+# OS Generated Files
+# ==============================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ==============================
+# Raw / Original Dataset
+# Keep the downloaded/original image dataset out of GitHub
+# ==============================
+data/raw/
+data/dataset/
+
+# ==============================
+# Local Test Uploads
+# ==============================
+new_images/
+
+# ==============================
+# Processed Dataset
+# Keep generated dataset splits and preprocessing outputs out of GitHub
+# ==============================
+data/processed/
+
+# ==============================
+# TensorFlow / Keras Temporary Files
+# ==============================
+*.ckpt
+*.ckpt.index
+*.ckpt.data-*
+checkpoint
+
+# ==============================
+# Experimental model checkpoints
+# ==============================
+models/mobilenetv2_multilabel_baseline.keras
+models/mobilenetv2_multilabel_weighted.keras
+
+# ==============================
+# Keep tracked project assets
+# ==============================
+# Model files, threshold JSON, notebooks, HTML/CSS/JS,
+# audio, and video are intentionally NOT ignored.

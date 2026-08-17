@@ -1,0 +1,9 @@
+{
+    "Healthy coral": 0.45,
+    "Compromised coral": 0.35,
+    "Dead coral": 0.25,
+    "Rubble": 0.4,
+    "Competition": 0.3,
+    "Disease": 0.3,
+    "Physical issues": 0.35
+}
