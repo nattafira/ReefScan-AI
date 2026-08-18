@@ -1,6 +1,9 @@
 # ReefScan AI 🌊🪸
 
-**ReefScan AI** is a deep learning project for multi-label classification of coral reef conditions from underwater images.
+**ReefScan AI** is a deep learning project for multi-label classification of
+coral reef conditions from underwater images.
+
+🌐 **Live Demo:** https://nattafira.pythonanywhere.com
 
 The system uses **MobileNetV2** with transfer learning and fine-tuning. Because the dataset is multi-label, a single image patch can contain multiple coral conditions or stressors at the same time.
 
@@ -123,7 +126,7 @@ Error analysis was performed after model training to understand the remaining we
 
 Key observations:
 
-- **Healthy coral** is the strongest label but also frequently appears together with other conditions.
+- **Healthy coral** is the strongest-performing label, but it may co-occur with other condition or stressor labels because the dataset uses multi-label annotations..
 - **Disease, Competition, and Physical issues** are more difficult to distinguish because they often co-occur with other labels and their visual characteristics can overlap with surrounding coral conditions.
 - Per-label threshold tuning improved the balance between precision and recall compared with using a fixed threshold of 0.5 for every label.
 - The final model should be interpreted as a **multi-label decision-support system**, not as a definitive ecological diagnosis.
@@ -168,7 +171,7 @@ app/
 ## 📁 Project Structure
 
 ```text
-Coral Classification Project/
+ReefScan-AI/
 │
 ├── app/
 │   ├── app.py
@@ -179,21 +182,17 @@ Coral Classification Project/
 │       ├── audio/
 │       └── video/
 │
-├── data/
-│   ├── dataset/
-│   ├── processed/
-│   └── raw/
-│
 ├── models/
 │   ├── reefscan_model.tflite
 │   └── reefscan_thresholds.json
 │
-├── new_images/
 ├── notebooks/
 │   ├── 01_Audit_Dataset.ipynb
 │   ├── 02_Prepare_Dataset.ipynb
 │   └── 03_Finalize_Inference.ipynb
 │
+├── .gitignore
+├── .python-version
 ├── requirements.txt
 └── README.md
 ```
@@ -285,6 +284,14 @@ The LiteRT model was validated against the original Keras model to ensure that t
 
 ---
 
+### Deployment Environment
+
+For deployment, the application uses a lightweight Python environment with
+**LiteRT** for model inference instead of the full TensorFlow runtime.
+
+The production environment reuses the host-provided Flask, NumPy, and Pillow
+packages where available, while LiteRT is installed separately.
+
 ## ⚠️ Limitations
 
 - The model was trained on coral image patches from a specific survey dataset and may not generalize equally well to arbitrary underwater or aquarium photographs.
@@ -298,17 +305,21 @@ The LiteRT model was validated against the original Keras model to ensure that t
 
 This project is based on the **CoralConditionDataset** from the XL-SHAO repository and the associated research work on multi-label coral reef condition classification.
 
-- Dataset repository: https://github.com/XL-SHAO/CoralConditionDataset
-- Research paper: https://doi.org/10.1002/aqc.4241
+- **Dataset:** [CoralConditionDataset](https://github.com/XL-SHAO/CoralConditionDataset)
+- **Research paper:** [DOI: 10.1002/aqc.4241](https://doi.org/10.1002/aqc.4241)
 
 ---
 
 ## 👩‍💻 Project Status
 
-**Current status:** Model development completed; LiteRT-based local inference API and web prototype integrated.
+**Current status:** Deployed and publicly accessible.
 
-The model was trained using **MobileNetV2 transfer learning with fine-tuning**, then converted from Keras to **LiteRT** for lightweight deployment.
+The ReefScan AI model was developed using **MobileNetV2 transfer learning with fine-tuning**, then converted from Keras to **LiteRT** for lightweight deployment.
 
-The converted model was validated against the original Keras model with negligible prediction differences.
+The converted LiteRT model was validated against the original Keras model with negligible prediction differences.
 
-**Next step:** Web application deployment.
+The model is integrated into a **Flask-based web application** and deployed on PythonAnywhere.
+
+### 🌐 Live Demo
+
+**ReefScan AI:** https://nattafira.pythonanywhere.com
